@@ -1,15 +1,24 @@
 package com.easystock.model;
 
 import com.easystock.enums.CategoryProduct;
-import com.easystock.exception.InsufficientQuantityException;
-import com.easystock.exception.InsufficientStockException;
-import com.easystock.exception.InvalidPriceException;
-import com.easystock.exception.ProductInvalidException;
+import com.easystock.exception.productException.InsufficientQuantityException;
+import com.easystock.exception.productException.InsufficientStockException;
+import com.easystock.exception.productException.InvalidPriceException;
+import com.easystock.exception.productException.ProductInvalidException;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name= "products")
 public class Product {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	
 	private String name;
 	private int quantity;
 	private float price;
