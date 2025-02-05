@@ -2,6 +2,7 @@ package com.easystock.service.impl;
 
 import java.util.Optional;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,12 @@ import com.easystock.model.Product;
 import com.easystock.repository.ProductRepository;
 import com.easystock.service.interfaces.ProductService;
 
+import ch.qos.logback.classic.Logger;
+
 @Service
 public class ProductServiceImpl implements ProductService {
+	
+	private static final Logger logger = (Logger) LoggerFactory.getLogger(ProductServiceImpl.class);
 	
 	private final ProductRepository productRepository;
 	
@@ -26,9 +31,14 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public Product create(Product product) {
+	public Product createProduct(Product product) {
+		logger.info("Iniciando a validação do produto");
 		validateProduct(product);
+		
+		logger.info("Verificando se o produto ja existe");
 		verifyProductAlreadyRegistered(product.getName()); // verifica se o nome do produto ja existe
+		
+		logger.info("Salvando o produto no banco de dados");
 		return productRepository.save(product);
 	}
 
@@ -52,13 +62,12 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public Optional<Product> findByName(String name) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return productRepository.findByName(name);
 	}
 	
 	
 	private void validateProductExistence(Product product) {
-		if(productRepository.findByName(product.getName()) == null) {
+		if(!productRepository.findByName(product.getName()).isPresent()) {
 			throw new RegisteredProductException("Produto não encontrado.");
 		}
 	}
@@ -79,10 +88,11 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	private void verifyProductAlreadyRegistered(String name) {
-		if(productRepository.findByName(name).isPresent()) {
+		logger.info("Verificando Produto");
+		Optional<Product>existingProduct = productRepository.findByName(name);
+		logger.info("Produto encontrado: ");
+		if(existingProduct.isPresent()) {
 			throw new ProductAlreadyRegisteredException("Produto já registrado com o nome: " + name);
 		}
 	}
-
-	
 }

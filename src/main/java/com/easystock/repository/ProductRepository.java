@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 import com.easystock.model.Product;
 
 
+
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>{
 
 	Optional<Product> findByName(String name);
+	
 }

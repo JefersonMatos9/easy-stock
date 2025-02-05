@@ -6,6 +6,7 @@ import com.easystock.exception.productException.InsufficientStockException;
 import com.easystock.exception.productException.InvalidPriceException;
 import com.easystock.exception.productException.ProductInvalidException;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +20,9 @@ public class Product {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@Column(unique = true)
 	private String name;
+	
 	private int quantity;
 	private float price;
 	private boolean available;

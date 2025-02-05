@@ -6,7 +6,7 @@ import com.easystock.model.Product;
 
 public interface ProductService {
 
-	Product create(Product product); // criar produto
+	Product createProduct(Product product); // criar produto
 	Product read(Long id); // buscar por id
 	Product update(Long id, Product product); //atualizar
 	Product delete(Long id); //deletar
