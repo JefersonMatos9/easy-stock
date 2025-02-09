@@ -8,6 +8,8 @@ import com.easystock.exception.productException.ProductInvalidException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +28,10 @@ public class Product {
 	private int quantity;
 	private float price;
 	private boolean available;
-	private CategoryProduct category; // criar a classe no pacote enums
+	
+	
+	@Enumerated(EnumType.STRING)// mapeia o enum como string no banco de dados
+	private CategoryProduct category; 
 	
 	
 	

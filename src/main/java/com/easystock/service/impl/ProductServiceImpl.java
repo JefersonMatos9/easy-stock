@@ -14,6 +14,7 @@ import com.easystock.exception.productException.ProductAlreadyRegisteredExceptio
 import com.easystock.exception.productException.RegisteredProductException;
 import com.easystock.model.Product;
 import com.easystock.repository.ProductRepository;
+import com.easystock.service.exception.ProductNotFound;
 import com.easystock.service.interfaces.ProductService;
 
 import ch.qos.logback.classic.Logger;
@@ -44,9 +45,11 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product read(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		return productRepository.findById(id)
+		.orElseThrow(()->
+			 new ProductNotFound("Produto não encontrado para o id: " + id));
+		}
+		
 
 	@Override
 	public Product update(Long id, Product product) {
