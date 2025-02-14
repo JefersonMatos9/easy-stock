@@ -12,4 +12,5 @@ public interface ProductService {
 	Product delete(Long id); //deletar
 	
 	Optional<Product> findByName(String name); // procurar nome
+	Optional<Product> findById(Long id);
 }

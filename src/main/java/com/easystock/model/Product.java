@@ -1,23 +1,26 @@
 package com.easystock.model;
 
-import com.easystock.enums.CategoryProduct;
+import java.math.BigDecimal;
+
 import com.easystock.exception.productException.InsufficientQuantityException;
 import com.easystock.exception.productException.InsufficientStockException;
 import com.easystock.exception.productException.InvalidPriceException;
 import com.easystock.exception.productException.ProductInvalidException;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name= "products")
 public class Product {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -25,15 +28,15 @@ public class Product {
 	@Column(unique = true)
 	private String name;
 	
-	private int quantity;
-	private float price;
-	private boolean available;
+	private Integer quantity;
+	private BigDecimal price;
+	private Boolean available;
 	
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "category" , nullable = false)
+	private Category category; 
 	
-	@Enumerated(EnumType.STRING)// mapeia o enum como string no banco de dados
-	private CategoryProduct category; 
-	
-	
+	public Product() {}
 	
 	
 	public Long getId() {
@@ -52,29 +55,21 @@ public class Product {
 		this.name = name;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity)throws ProductInvalidException {
-		if(quantity > 0) {
+	public void setQuantity(Integer quantity)throws ProductInvalidException {
 		this.quantity = quantity;
 		setAvailable();
-		}else {
-			throw new ProductInvalidException("Quantidade do produto não pode ser negativo ou zero");
-		}
 	}
 
-	public float getPrice() {
+	public BigDecimal getPrice() {
 		return price;
 	}
 
-	public void setPrice(float price)throws InvalidPriceException {
-		if(price > 0) {
-			this.price = price;
-		}else {
-			throw new InvalidPriceException ("O preço não pode ser negativo ou zero");
-		}
+	public void setPrice(BigDecimal price)throws InvalidPriceException {
+		this.price = price;
 	}
 
 	public boolean isAvailable() {
@@ -82,14 +77,14 @@ public class Product {
 	}
 
 	public void setAvailable() {
-		this.available = quantity > 0;
+		this.available = (quantity > 0 || quantity != null);
 		}
 
-	public CategoryProduct getCategory() {
+	public Category getCategory() {
 		return category;
 	}
 
-	public void setCategory(CategoryProduct category) {
+	public void setCategory(Category category) {
 		this.category = category;
 	}
 
