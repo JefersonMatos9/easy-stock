@@ -39,17 +39,22 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product createProduct(Product product) {
-		logger.info("Iniciando a validação do produto");
+		    
 		validateProduct(product);
+	
+		String normalizedName = product.getName().trim().toLowerCase();
+		product.setName(normalizedName); // normalizando nome para comparação 
 		
-		logger.info("Verificando se o produto ja existe");
 		verifyProductAlreadyRegistered(product.getName()); // verifica se o nome do produto ja existe
 		
-		 logger.info("Verificando e criando categoria, se necessário");
+		logger.info("3. Verificando categoria: " + product.getCategory().getName());
 		Category category = ensureCategoryExists(product.getCategory().getName());
+		
+		logger.info("4. Salvando produto no banco");
+		product.setName(product.getName().trim().toLowerCase());
 		product.setCategory(category);
 		
-		logger.info("Salvando o produto no banco de dados");
+		 logger.info("======= PRODUTO CRIADO COM SUCESSO =======");
 		return productRepository.save(product);
 	}
 
@@ -105,16 +110,16 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	private void verifyProductAlreadyRegistered(String name) {
-		logger.info("Verificando Produto");
-		Optional<Product>existingProduct = productRepository.findByName(name);
-		logger.info("Produto encontrado: ");
+
+		Optional<Product>existingProduct = productRepository.findByNameIgnoreCase(name);
+	
 		if(existingProduct.isPresent()) {
 			throw new ProductAlreadyRegisteredException("Produto já registrado com o nome: " + name);
 		}
 	}
 	
 	private void validateName(String name) {
-		if(name == null || name.trim().isEmpty()) {
+		if(name == null || name.trim().isEmpty()) {		
 			throw new InvalidNameProductException("Nome do produto é obrigatório");
 		}	
 	}
@@ -144,6 +149,10 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	private Category ensureCategoryExists(String categoryName) {
+		String normalizedName = categoryName.trim();
+		if (categoryRepository.findByNameIgnoreCase(normalizedName).isPresent()) {
+			throw new CategoryRequiredException("Categoria ja registrada: " + normalizedName);
+		}
 		 return categoryRepository.findByName(categoryName)
 	                .orElseGet(() -> {
 	                    Category newCategory = new Category();
@@ -176,7 +185,7 @@ public class ProductServiceImpl implements ProductService {
 	public Optional<Product> findById(Long id) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
-	}
+		}
 	}
 
 

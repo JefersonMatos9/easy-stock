@@ -12,8 +12,10 @@ import com.easystock.model.Product;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long>{
 
-	Optional<Product> findByName(String name);
+	Optional<Product>findByName(String name);
 	
-	Optional<Product> findById(Long id);
+	Optional<Product>findById(Long id);
+	
+	Optional<Product>findByNameIgnoreCase(String name);
 	
 }
