@@ -18,27 +18,27 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name= "products")
+@Table(name = "products")
 public class Product {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(unique = true)
 	private String name;
-	
+
 	private Integer quantity;
 	private BigDecimal price;
 	private Boolean available;
-	
+
 	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "category" , nullable = false)
-	private Category category; 
-	
-	public Product() {}
-	
-	
+	@JoinColumn(name = "category", nullable = false)
+	private Category category;
+
+	public Product() {
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -59,7 +59,7 @@ public class Product {
 		return quantity;
 	}
 
-	public void setQuantity(Integer quantity)throws ProductInvalidException {
+	public void setQuantity(Integer quantity) throws ProductInvalidException {
 		this.quantity = quantity;
 		setAvailable();
 	}
@@ -68,7 +68,7 @@ public class Product {
 		return price;
 	}
 
-	public void setPrice(BigDecimal price)throws InvalidPriceException {
+	public void setPrice(BigDecimal price) throws InvalidPriceException {
 		this.price = price;
 	}
 
@@ -78,7 +78,7 @@ public class Product {
 
 	public void setAvailable() {
 		this.available = (quantity > 0 || quantity != null);
-		}
+	}
 
 	public Category getCategory() {
 		return category;
@@ -88,14 +88,15 @@ public class Product {
 		this.category = category;
 	}
 
-	private void decreaseStock(int quantity)throws InsufficientStockException {
-		if(this.quantity < quantity ) {
-			throw new InsufficientStockException("Não há estoque suficiente para o produto '" + getName() + "'. Quantidade solicitada: " + quantity + ", quantidade disponível: " + getQuantity() + ".");
+	private void decreaseStock(int quantity) throws InsufficientStockException {
+		if (this.quantity < quantity) {
+			throw new InsufficientStockException("Não há estoque suficiente para o produto '" + getName()
+					+ "'. Quantidade solicitada: " + quantity + ", quantidade disponível: " + getQuantity() + ".");
 		}
 	}
 
-	private void increaseStock(int quantity)throws InsufficientQuantityException {
-		if(quantity <= 0) {
+	private void increaseStock(int quantity) throws InsufficientQuantityException {
+		if (quantity <= 0) {
 			throw new InsufficientQuantityException("A quantidade adicionada deve ser maior que zero");
 		}
 		this.quantity += quantity;

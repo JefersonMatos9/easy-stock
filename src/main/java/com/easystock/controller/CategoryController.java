@@ -18,30 +18,30 @@ import com.easystock.service.interfaces.CategoryService;
 @Controller
 @RequestMapping("/api/category")
 public class CategoryController {
-	
+
 	@Autowired
 	CategoryService categoryService;
-	
+
 	@PostMapping
-	public ResponseEntity<Category>create(@RequestBody Category category){
+	public ResponseEntity<Category> create(@RequestBody Category category) {
 		Category createdCategory = categoryService.createCategory(category);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Category>read(@PathVariable Long id){
+	public ResponseEntity<Category> read(@PathVariable Long id) {
 		Category category = categoryService.read(id);
 		return ResponseEntity.ok(category);
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<Category>update(@PathVariable Long id, @RequestBody Category category){
+	public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category category) {
 		Category updateCategory = categoryService.update(id, category);
 		return ResponseEntity.ok(updateCategory);
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void>delete(@PathVariable Long id){
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		categoryService.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

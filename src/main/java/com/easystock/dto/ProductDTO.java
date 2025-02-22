@@ -14,17 +14,19 @@ public class ProductDTO {
 	private BigDecimal price;
 	private Integer quantity;
 	private String categoryName;
-	
-	 // Construtor vazio - é como criar uma caixa vazia para depois colocar coisas dentro
-	public ProductDTO(){}
-	
-	 // Construtor que transforma um Product em ProductDTO
-    // É como pegar alguns brinquedos da caixa grande e colocar na caixa pequena
+
+	// Construtor vazio - é como criar uma caixa vazia para depois colocar coisas
+	// dentro
+	public ProductDTO() {
+	}
+
+	// Construtor que transforma um Product em ProductDTO
+	// É como pegar alguns brinquedos da caixa grande e colocar na caixa pequena
 	public ProductDTO(Product product) {
 		this.name = product.getName();
-        this.price = product.getPrice();
-        this.quantity = product.getQuantity();
-        this.categoryName = product.getCategory().getName();
+		this.price = product.getPrice();
+		this.quantity = product.getQuantity();
+		this.categoryName = product.getCategory().getName();
 	}
 
 	public String getName() {
@@ -58,21 +60,20 @@ public class ProductDTO {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
-	
 
-    // Método para transformar o DTO de volta em Product
-    // É como pegar as coisas da caixa pequena e colocar na caixa grande
+	// Método para transformar o DTO de volta em Product
+	// É como pegar as coisas da caixa pequena e colocar na caixa grande
 	public Product toProduct() {
 		Product product = new Product();
-		  product.setName(this.name);
-	        product.setPrice(this.price);
-	        product.setQuantity(this.quantity);
-	        
-	        Category category = new Category();
-	        category.setName(this.categoryName);
-	        product.setCategory(category);
-	        
-	        return product;     //EDITAR ANOTAÇÕES DO SPRIING
+		product.setName(this.name);
+		product.setPrice(this.price);
+		product.setQuantity(this.quantity);
+
+		Category category = new Category();
+		category.setName(this.categoryName);
+		product.setCategory(category);
+
+		return product; // EDITAR ANOTAÇÕES DO SPRIING
 	}
-			
+
 }

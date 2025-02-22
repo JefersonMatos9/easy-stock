@@ -1,4 +1,4 @@
-package com.easystock.controller;																				
+package com.easystock.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,29 +22,28 @@ public class ProductController {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@PostMapping
 	public ResponseEntity<Product> create(@RequestBody Product product) {
 		Product createdProduct = productService.createProduct(product);
 		return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<Product> read(@PathVariable Long id) {
 		Product product = productService.read(id);
-				return ResponseEntity.ok(product);
+		return ResponseEntity.ok(product);
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<Product> update (@PathVariable Long id, @RequestBody Product product){
-		Product updateProduct = productService.update(id,product);
+	public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+		Product updateProduct = productService.update(id, product);
 		return ResponseEntity.ok(updateProduct);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Product> delete(@PathVariable Long id) {
 		Product deleteProduct = productService.delete(id);
 		return ResponseEntity.ok(deleteProduct);
 	}
 }
-
