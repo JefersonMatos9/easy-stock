@@ -73,7 +73,7 @@ public class Product {
 	}
 
 	public boolean isAvailable() {
-		return available;
+		return Boolean.TRUE.equals(available);  // se o available for nulo ele retorna um false automaticamente
 	}
 
 	public void setAvailable() {
