@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Produto</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Novo Produto</h1>
+
+        <form th:action="@{/api/products}" method="post" th:object="${produto}">
+            <label for="name">Nome</label>
+            <input type="text" id="name" th:field="*{name}" placeholder="Nome do Produto" required />
+
+            <label for="quantity">Quantidade</label>
+            <input type="number" id="quantity" th:field="*{quantity}" placeholder="Quantidade em Estoque" required />
+
+            <label for="price">Preço</label>
+            <input type="number" step="0.01" id="price" th:field="*{price}" placeholder="Preço do Produto" required />
+
+            <label for="category">Categoria</label>
+            <select id="category" th:field="*{category}" required>
+                <option value="">Selecione uma categoria</option>
+                <option th:each="cat : ${categorias}" th:value="${cat}" th:text="${cat.name}"></option>
+            </select>
+
+            <button type="submit">Cadastrar Produto</button>
+        </form>
+
+        <a class="voltar" href="/produtos">← Voltar para lista</a>
+    </div>
+</body>
+</html>

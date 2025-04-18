@@ -1,5 +1,7 @@
 package com.easystock.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,12 @@ public class CategoryServiceIMPL implements CategoryService {
 		return deleteCategory;
 	}
 
+	
+	@Override
+	   public List<Category> listarCategorias() {
+        return categoryRepository.findAll();
+    }
+	
 	private void updateCategoryFields(Category categoryUpdate, Category category) {
 		if (category.getName() == null || category.getName().trim().isEmpty()) { // .trim()remove espaços antes e depois
 																					// do nome}

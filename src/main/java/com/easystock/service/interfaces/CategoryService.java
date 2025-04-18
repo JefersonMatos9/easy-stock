@@ -1,5 +1,7 @@
 package com.easystock.service.interfaces;
 
+import java.util.List;
+
 import com.easystock.model.Category;
 
 public interface CategoryService {
@@ -11,5 +13,7 @@ public interface CategoryService {
 	Category delete(Long id);
 
 	Category update(Long id, Category category);
+	
+	List<Category>listarCategorias();
 
 }

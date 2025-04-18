@@ -77,6 +77,11 @@ public class OrderServiceIMPL implements OrderService {
 			throw new ErrorInValue("Valor total do pedido deve ser maior que zero.");
 		}
 	}
+	
+	@Override
+	public List<Order>findAll(){
+		return orderRepository.findAll();
+	}
 
 	private Order createOrder(Order order) {
 		List<OrderItem> newItems = new ArrayList<>();

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pedidos</title>
+	<link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+    <h1>Lista de Pedidos</h1>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Número</th>
+            <th>Status</th>
+            <th>Data</th>
+            <th>Total</th>
+        </tr>
+        <tr th:each="pedido : ${pedidos}">
+            <td th:text="${pedido.id}"></td>
+            <td th:text="${pedido.orderNumber}"></td>
+            <td th:text="${pedido.status}"></td>
+            <td th:text="${pedido.dateTime}"></td>
+            <td th:text="${pedido.totalValue}"></td>
+        </tr>
+    </table>
+</body>
+</html>

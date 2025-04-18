@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Pedido</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Novo Pedido</h1>
+        <form th:action="@{/api/orders}" method="post" th:object="${pedido}">
+            <label for="nomeCliente">Nome do Cliente</label>
+            <input type="text" id="nomeCliente" name="nomeCliente" th:field="*{nomeCliente}" required>
+
+            <label for="dataPedido">Data do Pedido</label>
+            <input type="date" id="dataPedido" name="dataPedido" th:field="*{dataPedido}" required>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+        <a class="voltar" href="/pedidos">← Voltar para lista</a>
+    </div>
+</body>
+</html>
