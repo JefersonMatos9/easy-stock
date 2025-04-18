@@ -1,29 +1,44 @@
 package com.easystock.model;
 
 import java.math.BigDecimal;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "order_items")
 public class OrderItem {
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Product product;
-	private Integer quantity;
-	private String observation;
-	private BigDecimal subTotal;
-	
-	
-	public OrderItem(Product product, Integer quantity, String observation) {
 
+	@ManyToOne
+	@JoinColumn(name = "product_id")
+	private Product product;
+
+	@ManyToOne
+	@JoinColumn(name = "order_id", nullable = false)
+	private Order order;
+
+	private int quantity;
+
+	private String observation;
+
+	private BigDecimal subTotal;
+
+	public OrderItem() {
+		// Construtor padrão necessário para JPA
+	}
+
+	public OrderItem(Product product, int quantity, String observation) {
 		this.product = product;
 		this.quantity = quantity;
 		this.observation = observation;
-		this.subTotal = calculateSubTotal();
-	}
-	
-	public BigDecimal calculateSubTotal() {
-		if(product == null || product.getPrice() == null || quantity == null || quantity <= 0) {
-			return BigDecimal.ZERO;
-		}
-		return product.getPrice().multiply(BigDecimal.valueOf(quantity));
+		this.calculateSubTotal();
 	}
 
 	public Long getId() {
@@ -40,17 +55,16 @@ public class OrderItem {
 
 	public void setProduct(Product product) {
 		this.product = product;
-		this.subTotal = calculateSubTotal();
+		calculateSubTotal();
 	}
 
-	public Integer getQuantity() {
+	public int getQuantity() {
 		return quantity;
-		
 	}
 
-	public void setQuantity(Integer quantity) {
+	public void setQuantity(int quantity) {
 		this.quantity = quantity;
-		this.subTotal = calculateSubTotal();
+		calculateSubTotal();
 	}
 
 	public String getObservation() {
@@ -61,7 +75,27 @@ public class OrderItem {
 		this.observation = observation;
 	}
 
+	public Order getOrder() {
+		return order;
+	}
+
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+
 	public BigDecimal getSubTotal() {
-		return calculateSubTotal();
+		return subTotal;
+	}
+
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
+	}
+
+	private void calculateSubTotal() {
+		if (product != null && product.getPrice() != null) {
+			this.subTotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+		} else {
+			this.subTotal = BigDecimal.ZERO;
+		}
 	}
 }

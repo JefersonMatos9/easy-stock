@@ -1,4 +1,4 @@
-package com.easystock.service.impl;
+package com.easystock.service.exception;
 
 public class ItemInvalidException extends RuntimeException {
 

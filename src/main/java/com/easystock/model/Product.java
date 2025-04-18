@@ -93,6 +93,7 @@ public class Product {
 			throw new InsufficientStockException("Não há estoque suficiente para o produto '" + getName()
 					+ "'. Quantidade solicitada: " + quantity + ", quantidade disponível: " + getQuantity() + ".");
 		}
+		this.quantity -= quantity;
 	}
 
 	private void increaseStock(int quantity) throws InsufficientQuantityException {

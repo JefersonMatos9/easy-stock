@@ -1,19 +1,12 @@
 package com.easystock.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.easystock.exception.productException.CategoryRequiredException;
 import com.easystock.model.Category;
-import com.easystock.model.Product;
 import com.easystock.repository.CategoryRepository;
 import com.easystock.service.interfaces.CategoryService;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
 
 @Service
 public class CategoryServiceIMPL implements CategoryService {
@@ -51,7 +44,7 @@ public class CategoryServiceIMPL implements CategoryService {
 		Category deleteCategory = findById(id);
 		if (deleteCategory.getProducts() != null && !deleteCategory.getProducts().isEmpty()) {
 			throw new CategoryRequiredException(
-					"Não é possicel excluir a categoria. Existem produtos vinculados a ela.");
+					"Não é possivel excluir a categoria. Existem produtos vinculados a ela.");
 		}
 		categoryRepository.delete(deleteCategory);
 		return deleteCategory;

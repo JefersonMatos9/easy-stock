@@ -20,9 +20,6 @@ import com.easystock.repository.ProductRepository;
 import com.easystock.service.exception.ProductNotFound;
 import com.easystock.service.interfaces.ProductService;
 
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -47,14 +44,12 @@ public class ProductServiceImpl implements ProductService {
 
 		verifyProductAlreadyRegistered(product.getName()); // verifica se o nome do produto ja existe
 
-		logger.info("3. Verificando categoria: " + product.getCategory().getName());
+		// Vemos se a categoria já existe ou criamos uma nova
 		Category category = ensureCategoryExists(product.getCategory().getName());
 
-		logger.info("4. Salvando produto no banco");
 		product.setName(product.getName().trim().toLowerCase());
 		product.setCategory(category);
 
-		logger.info("======= PRODUTO CRIADO COM SUCESSO =======");
 		return productRepository.save(product);
 	}
 
@@ -146,10 +141,14 @@ public class ProductServiceImpl implements ProductService {
 
 	private Category ensureCategoryExists(String categoryName) {
 		String normalizedName = categoryName.trim();
-		if (categoryRepository.findByNameIgnoreCase(normalizedName).isPresent()) {
-			throw new CategoryRequiredException("Categoria ja registrada: " + normalizedName);
+		Optional<Category> existingCategory = categoryRepository.findByNameIgnoreCase(normalizedName);
+
+		if (existingCategory.isPresent()) {
+			return existingCategory.get();
 		}
+		// Se não encontrou pelo nome normalizado, tenta pelo nome original
 		return categoryRepository.findByName(categoryName).orElseGet(() -> {
+			// Se não existir nenhuma categoria, cria uma nova
 			Category newCategory = new Category();
 			newCategory.setName(categoryName);
 			return categoryRepository.save(newCategory);
@@ -179,7 +178,7 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	public Optional<Product> findById(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+
+		return productRepository.findById(id);
 	}
 }

@@ -43,7 +43,7 @@ public class ProductExceptionHandler {
 	
 	//produto invalido - erro 400
 	@ExceptionHandler(ProductInvalidException.class)
-	public ResponseEntity<String> handleProductInvalidException(InvalidPriceException e){
+	public ResponseEntity<String> handleProductInvalidException(ProductInvalidException e){
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	}
 	

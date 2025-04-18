@@ -25,3 +25,4 @@ public enum StatusRequest {
 		return this.name().toLowerCase();
 	}
 }
+ 	
