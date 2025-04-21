@@ -1,5 +1,6 @@
 package com.easystock.service.interfaces;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.easystock.model.Product;
@@ -17,4 +18,6 @@ public interface ProductService {
 	Optional<Product> findByName(String name); // procurar nome
 
 	Optional<Product> findById(Long id);
+
+	List<Product> findAll();
 }

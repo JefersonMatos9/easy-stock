@@ -29,20 +29,20 @@ public class CategoryServiceIMPL implements CategoryService {
 	}
 
 	@Override
-	public Category read(Long id) {
+	public Category read(Integer id) {
 		return categoryRepository.findById(id)
 				.orElseThrow(() -> new CategoryRequiredException("Categoria não encontrada para o id: " + id));
 	}
 
 	@Override
-	public Category update(Long id, Category category) {
+	public Category update(Integer id, Category category) {
 		Category categoryUpdate = findById(id);
 		updateCategoryFields(categoryUpdate, category);
 		return categoryRepository.save(categoryUpdate);
 	}
 
 	@Override
-	public Category delete(Long id) {
+	public Category delete(Integer id) {
 		Category deleteCategory = findById(id);
 		if (deleteCategory.getProducts() != null && !deleteCategory.getProducts().isEmpty()) {
 			throw new CategoryRequiredException(
@@ -58,6 +58,8 @@ public class CategoryServiceIMPL implements CategoryService {
         return categoryRepository.findAll();
     }
 	
+	
+	
 	private void updateCategoryFields(Category categoryUpdate, Category category) {
 		if (category.getName() == null || category.getName().trim().isEmpty()) { // .trim()remove espaços antes e depois
 																					// do nome}
@@ -66,7 +68,7 @@ public class CategoryServiceIMPL implements CategoryService {
 		categoryUpdate.setName(category.getName().trim());
 	}
 
-	private Category findById(Long id) {
+	public Category findById(Integer id) {
 		return categoryRepository.findById(id)
 				.orElseThrow(() -> new CategoryRequiredException("Categoria não encontrada para o id: " + id));
 	}

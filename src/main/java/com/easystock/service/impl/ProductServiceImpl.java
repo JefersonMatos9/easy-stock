@@ -1,6 +1,7 @@
 package com.easystock.service.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Optional<Product> findByName(String name) {
 		return productRepository.findByName(name);
+	}
+	
+	@Override
+	public List<Product> findAll() {
+		return productRepository.findAll();
 	}
 
 	private Product findProductById(Long id) {

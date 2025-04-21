@@ -29,19 +29,19 @@ public class CategoryController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Category> read(@PathVariable Long id) {
+	public ResponseEntity<Category> read(@PathVariable Integer id) {
 		Category category = categoryService.read(id);
 		return ResponseEntity.ok(category);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Category> update(@PathVariable Long id, @RequestBody Category category) {
+	public ResponseEntity<Category> update(@PathVariable Integer id, @RequestBody Category category) {
 		Category updateCategory = categoryService.update(id, category);
 		return ResponseEntity.ok(updateCategory);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		categoryService.delete(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

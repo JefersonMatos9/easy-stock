@@ -7,7 +7,6 @@ import com.easystock.exception.productException.InsufficientStockException;
 import com.easystock.exception.productException.InvalidPriceException;
 import com.easystock.exception.productException.ProductInvalidException;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +31,7 @@ public class Product {
 	private BigDecimal price;
 	private Boolean available;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne
 	@JoinColumn(name = "category", nullable = false)
 	private Category category;
 

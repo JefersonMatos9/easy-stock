@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Produtos</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Produtos</h1>
+
+        <a class="novo-produto" th:href="@{/produtos/novo}">+ Novo Produto</a>
+
+        <table class="lista-tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Categoria</th>
+                    <th>Disponível</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="produto : ${produtos}">
+                    <td th:text="${produto.id}"></td>
+                    <td th:text="${produto.name}"></td>
+                    <td th:text="${produto.quantity}"></td>
+                    <td th:text="${#numbers.formatDecimal(produto.price, 1, 2, 'COMMA')}"></td>
+                    <td th:text="${produto.category.name}"></td>
+                    <td th:text="${produto.available ? 'Sim' : 'Não'}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <a class="voltar" href="/">← Voltar para a página inicial</a>
+    </div>
+</body>
+</html>
