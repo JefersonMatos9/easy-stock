@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Pedido</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <a th:href="@{/}"><h2>EasyStock</h2></a>
+        <ul>
+            <li><a th:href="@{/dashboard}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a th:href="@{/produtos}"><i class="fas fa-box-open"></i> Produtos</a></li>
+            <li class="active"><a th:href="@{/pedidos}"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+            <li><a th:href="@{/configuracoes}"><i class="fas fa-cog"></i> Configurações</a></li>
+        </ul>
+    </div>
+    <div class="content-area">
+        <h1>Detalhes do Pedido #<span th:text="${pedido.orderNumber}"></span></h1>
+
+        <div class="detalhes-pedido">
+			
+			
+			
+            <div class="info-pedido">
+                <p><strong>ID do Pedido:</strong> <span th:text="${pedido.id}"></span></p>
+                <p><strong>Data e Hora:</strong> <span th:text="${#temporals.format(pedido.dateTime, 'dd/MM/yyyy HH:mm:ss')}"></span></p>
+                <p><strong>Status:</strong> <span th:text="${pedido.status}"></span></p>
+               <p><strong>Total:</strong> <span th:text="${#numbers.formatDecimal(pedido.totalValue, 2, 2)}"></span></p>
+            </div>
+
+            <h2>Itens do Pedido</h2>
+            <table class="lista-tabela">
+                <thead>
+                    <tr>
+                        <th>ID do Item</th>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Observação</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${pedido.items}">
+                        <td th:text="${item.id}"></td>
+                        <td th:text="${item.product.name}"></td>
+                        <td th:text="${item.quantity}"></td>
+                        <td th:text="${item.observation}"></td>
+                        <td th:text="${#numbers.formatDecimal(item.subTotal, 2, 2)}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <a class="voltar" href="/pedidos">← Voltar para a Lista de Pedidos</a>
+    </div>
+</body>
+</html>

@@ -2,26 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Pedidos</title>
-	<link rel="stylesheet" th:href="@{/css/estilo.css}" />
+    <title>Lista de Pedidos</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <h1>Lista de Pedidos</h1>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Número</th>
-            <th>Status</th>
-            <th>Data</th>
-            <th>Total</th>
-        </tr>
-        <tr th:each="pedido : ${pedidos}">
-            <td th:text="${pedido.id}"></td>
-            <td th:text="${pedido.orderNumber}"></td>
-            <td th:text="${pedido.status}"></td>
-            <td th:text="${pedido.dateTime}"></td>
-            <td th:text="${pedido.totalValue}"></td>
-        </tr>
-    </table>
+    <div class="sidebar">
+        <a th:href="@{/}"><h2>EasyStock</h2></a>
+        <ul>
+            <li><a th:href="@{/dashboard}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+            <li><a th:href="@{/produtos}"><i class="fas fa-box-open"></i> Produtos</a></li>
+            <li class="active"><a th:href="@{/pedidos}"><i class="fas fa-shopping-cart"></i> Pedidos</a></li>
+            <li><a th:href="@{/configuracoes}"><i class="fas fa-cog"></i> Configurações</a></li>
+        </ul>
+    </div>
+    <div class="content-area">
+        <h1>Lista de Pedidos</h1>
+
+        <div th:if="${mensagemSucesso}" class="success-message">
+            <strong th:text="${mensagemSucesso}"></strong>
+        </div>
+
+        <div th:if="${mensagemErro}" class="error-message">
+            <strong th:text="${mensagemErro}"></strong>
+        </div>
+
+        <a th:href="@{/pedidos/novo}" class="button-link">Criar Novo Pedido</a>
+
+        <table class="lista-tabela">
+            <thead>
+                <tr>
+                    <th>Número do Pedido</th>
+                    <th>Data e Hora</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pedido : ${pedidos}">
+                    <td th:text="${pedido.orderNumber}"></td>
+                    <td th:text="${#temporals.format(pedido.dateTime, 'dd/MM/yyyy HH:mm:ss')}"></td>
+                    <td th:text="${pedido.status}"></td>
+                    <td th:text="${#numbers.formatDecimal(pedido.totalValue, 2, 2)}"></td>
+                    <td>
+                        <a th:href="@{/pedidos/{id}(id=${pedido.id})}" class="action-button view-button">Ver Detalhes</a>
+                        <a th:href="@{/pedidos/editar/{id}(id=${pedido.id})}" class="action-button edit-button">Editar</a>
+                        <a th:href="@{/pedidos/excluir/{id}(id=${pedido.id})}" class="action-button delete-button"
+                           onclick="return confirm('Tem certeza que deseja excluir este pedido? Esta ação é irreversível.');">Excluir</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

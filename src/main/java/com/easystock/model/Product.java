@@ -2,11 +2,6 @@ package com.easystock.model;
 
 import java.math.BigDecimal;
 
-import com.easystock.exception.productException.InsufficientQuantityException;
-import com.easystock.exception.productException.InsufficientStockException;
-import com.easystock.exception.productException.InvalidPriceException;
-import com.easystock.exception.productException.ProductInvalidException;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,90 +10,92 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid; // Importe esta, se ainda não estiver importada para @Valid em Category
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "products")
 public class Product {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(unique = true)
-	private String name;
+    @NotBlank(message = "O nome é obrigatório.") // Validação para o nome
+    @Column(unique = true)
+    private String name;
 
-	private Integer quantity;
-	private BigDecimal price;
-	private Boolean available;
+    @NotNull(message = "A quantidade é obrigatória.") // Validação para quantidade não nula
+    @Min(value = 0, message = "A quantidade não pode ser negativa.") // Validação para quantidade mínima de 0
+    private Integer quantity;
 
-	@ManyToOne
-	@JoinColumn(name = "category", nullable = false)
-	private Category category;
+    @NotNull(message = "O preço é obrigatório.") // Validação para preço não nulo
+    @DecimalMin(value = "0.01", message = "O preço deve ser maior que zero.") // Validação para preço mínimo (0.01 ou mais)
+    private BigDecimal price;
 
-	public Product() {
-	}
+    private Boolean available;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToOne
+    @JoinColumn(name = "category", nullable = false)
+    @NotNull(message = "A categoria é obrigatória.") // Validação para categoria não nula
+    @Valid // Usar @Valid se você tiver validações dentro da classe Category também
+    private Category category;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Product() {
+    }
 
-	public String getName() {
-		return name;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Integer getQuantity() {
-		return quantity;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setQuantity(Integer quantity) throws ProductInvalidException {
-		this.quantity = quantity;
-		setAvailable();
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public BigDecimal getPrice() {
-		return price;
-	}
+    public Integer getQuantity() {
+        return quantity;
+    }
 
-	public void setPrice(BigDecimal price) throws InvalidPriceException {
-		this.price = price;
-	}
+    // Remova o 'throws ProductInvalidException' daqui, pois a validação será feita pelas anotações
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+        setAvailable();
+    }
 
-	public boolean isAvailable() {
-		return Boolean.TRUE.equals(available);  // se o available for nulo ele retorna um false automaticamente
-	}
+    public BigDecimal getPrice() {
+        return price;
+    }
 
-	public void setAvailable() {
-		this.available = (quantity > 0 || quantity != null);
-	}
+    // Remova o 'throws InvalidPriceException' e a lógica de validação manual daqui.
+    // A validação agora será feita pelas anotações.
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 
-	public Category getCategory() {
-		return category;
-	}
+    public boolean isAvailable() {
+        return Boolean.TRUE.equals(available);
+    }
 
-	public void setCategory(Category category) {
-		this.category = category;
-	}
+    private void setAvailable() {
+        this.available = (quantity != null && quantity > 0);
+    }
 
-	private void decreaseStock(int quantity) throws InsufficientStockException {
-		if (this.quantity < quantity) {
-			throw new InsufficientStockException("Não há estoque suficiente para o produto '" + getName()
-					+ "'. Quantidade solicitada: " + quantity + ", quantidade disponível: " + getQuantity() + ".");
-		}
-		this.quantity -= quantity;
-	}
+    public Category getCategory() {
+        return category;
+    }
 
-	private void increaseStock(int quantity) throws InsufficientQuantityException {
-		if (quantity <= 0) {
-			throw new InsufficientQuantityException("A quantidade adicionada deve ser maior que zero");
-		}
-		this.quantity += quantity;
-	}
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 }

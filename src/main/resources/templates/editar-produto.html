@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastrar Produto</title>
+    <title>Editar Produto</title>
     <link rel="stylesheet" th:href="@{/css/estilo.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Seus estilos CSS personalizados */
         .new-category-container {
             margin-top: 15px;
             border: 1px solid #ccc;
@@ -56,13 +57,24 @@
         </ul>
     </div>
     <div class="content-area">
-        <h1>Novo Produto</h1>
+        <h1>Editar Produto</h1>
 
+        <div th:if="${mensagemSucesso}" class="alert alert-success">
+            <span th:text="${mensagemSucesso}"></span>
+        </div>
+        <div th:if="${mensagemErro}" class="alert alert-danger">
+            <span th:text="${mensagemErro}"></span>
+        </div>
         <div th:if="${erro}" class="error-message">
             <strong th:text="${erro}"></strong>
         </div>
+        <div th:if="${erroGeral}" class="error-message">
+            <strong th:text="${erroGeral}"></strong>
+        </div>
 
-        <form th:action="@{/produtos/salvar}" method="post" th:object="${produto}" id="cadastroProdutoForm">
+        <form th:action="@{/produtos/editar/{id}(id=${produto.id})}" method="post" th:object="${produto}" id="editarProdutoForm">
+            <input type="hidden" th:field="*{id}" />
+
             <label for="name">Nome</label>
             <input type="text" id="name" th:field="*{name}" placeholder="Nome do Produto" required />
             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message"></span>
@@ -78,11 +90,14 @@
             <label for="categorySelect">Categoria</label>
             <select id="categorySelect" name="category.id" required>
                 <option value="">Selecione uma categoria</option>
+                <option value="-1" th:selected="${produto.category != null && produto.category.id == null}">
+                    Nova Categoria
+                </option>
                 <option th:each="cat : ${categorias}" th:value="${cat.id}" th:text="${cat.name}"
                         th:selected="${produto.category != null && produto.category.id == cat.id}"></option>
-                <option value="-1">Nova Categoria</option>
             </select>
             <input type="hidden" name="categoryOption" id="categoryOption" th:value="${produto.category != null && produto.category.id == null ? 'new' : 'existing'}" />
+            <span th:if="${#fields.hasErrors('category')}" th:errors="*{category}" class="error-message"></span>
 
 
             <div id="new-category-container" class="new-category-container"
@@ -90,12 +105,9 @@
                 <label for="newCategoryName">Nome da Nova Categoria</label>
                 <input type="text" id="newCategoryName" name="newCategoryName" placeholder="Digite o nome da nova categoria"
                        th:value="${produto.category != null && produto.category.id == null ? produto.category.name : ''}" />
-                <div class="error-message" id="categoryError" style="display: none;">
-                    Por favor, digite o nome da nova categoria.
                 </div>
-            </div>
 
-            <button type="submit">Cadastrar Produto</button>
+            <button type="submit">Atualizar Produto</button>
         </form>
 
         <a class="voltar" th:href="@{/produtos}">← Voltar para lista</a>
@@ -107,42 +119,21 @@
             const newCategoryContainer = document.getElementById('new-category-container');
             const newCategoryNameInput = document.getElementById('newCategoryName');
             const categoryOption = document.getElementById('categoryOption');
-            const categoryError = document.getElementById('categoryError');
-            const cadastroProdutoForm = document.getElementById('cadastroProdutoForm');
 
-            // Mostra/oculta o contêiner de nova categoria com base na seleção
-            categorySelect.addEventListener('change', function() {
-                if (this.value === '-1') {
+            function toggleNewCategoryField() {
+                if (categorySelect.value === '-1') {
                     newCategoryContainer.style.display = 'block';
                     newCategoryNameInput.focus();
                     categoryOption.value = 'new';
                 } else {
                     newCategoryContainer.style.display = 'none';
                     categoryOption.value = 'existing';
-                    categoryError.style.display = 'none';
+                    newCategoryNameInput.value = ''; // Limpa o campo
                 }
-            });
-
-            // Validação no envio do formulário
-            cadastroProdutoForm.addEventListener('submit', function(event) {
-                const selectedCategory = categorySelect.value;
-                const newCategoryName = newCategoryNameInput.value.trim();
-
-                if (selectedCategory === '-1' && newCategoryName === '') {
-                    event.preventDefault();
-                    categoryError.style.display = 'block';
-                    newCategoryNameInput.focus();
-                } else {
-                    categoryError.style.display = 'none';
-                }
-            });
-
-            // Verifique se uma nova categoria já estava selecionada (em caso de recarregamento)
-            // Isso acontece se houver um erro de validação e o formulário for recarregado
-            if (categorySelect.value === '-1') {
-                newCategoryContainer.style.display = 'block';
-                categoryOption.value = 'new';
             }
+
+            categorySelect.addEventListener('change', toggleNewCategoryField);
+            toggleNewCategoryField(); // Chama na carga da página
         });
     </script>
 </body>

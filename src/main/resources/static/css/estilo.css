@@ -1,64 +1,788 @@
+/* ================================================== */
+/* Estilos Gerais - Base moderna e refinada */
+/* ================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Paleta de cores principal */
+  --primary: #15803d;       /* Verde principal */
+  --primary-light: #22c55e; /* Verde claro */
+  --primary-dark: #166534;  /* Verde escuro */
+  --secondary: #1e40af;     /* Azul secundário */
+  --secondary-light: #3b82f6; /* Azul claro */
+  --accent: #f59e0b;        /* Cor de destaque (amarelo âmbar) */
+  --danger: #dc2626;        /* Vermelho para alertas/exclusão */
+  --danger-dark: #b91c1c;   /* Vermelho escuro */
+  
+  /* Cores neutras */
+  --dark: #1f2937;          /* Quase preto */
+  --gray-dark: #4b5563;     /* Cinza escuro */
+  --gray: #9ca3af;          /* Cinza médio */
+  --gray-light: #e5e7eb;    /* Cinza claro */
+  --light: #f9fafb;         /* Quase branco */
+  --white: #ffffff;         /* Branco puro */
+  
+  /* Espaçamentos */
+  --space-xs: 0.25rem;      /* 4px */
+  --space-sm: 0.5rem;       /* 8px */
+  --space-md: 1rem;         /* 16px */
+  --space-lg: 1.5rem;       /* 24px */
+  --space-xl: 2rem;         /* 32px */
+  
+  /* Sombras */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.05), 0 10px 10px rgba(0, 0, 0, 0.04);
+  
+  /* Bordas arredondadas */
+  --radius-sm: 0.25rem;     /* 4px */
+  --radius-md: 0.5rem;      /* 8px */
+  --radius-lg: 0.75rem;     /* 12px */
+  --radius-xl: 1rem;        /* 16px */
+  --radius-full: 9999px;    /* Botões circulares */
+}
+
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f6f9;
-    margin: 0;
-    padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  min-height: 100vh;
+  color: var(--dark);
+  line-height: 1.6;
+  font-size: 16px;
 }
 
-.container {
-    max-width: 500px;
-    background-color: #fff;
-    margin: 50px auto;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+/* Melhorias de tipografia */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--dark);
+  margin-top: 0;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
+a:hover {
+  color: var(--primary-light);
 }
 
-label {
-    margin: 15px 0 5px;
-    font-weight: bold;
+/* ================================================== */
+/* Barra Lateral - Navegação elegant e moderna */
+/* ================================================== */
+.sidebar {
+  background: linear-gradient(145deg, #1a1d22, #2d353e);
+  color: var(--white);
+  width: 280px;
+  padding: var(--space-xl) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100vh;
+  position: fixed;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
 }
 
-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
 }
 
-button {
-    margin-top: 20px;
-    padding: 12px;
-    background-color: #28a745;
-    color: white;
-    font-weight: bold;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.sidebar-header h2 {
+  color: var(--white);
+  margin: 0;
+  font-size: 1.5rem;
 }
 
-button:hover {
-    background-color: #218838;
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1.4rem;
+  margin-bottom: var(--space-xl);
 }
 
-a.voltar {
-    display: inline-block;
-    margin-top: 20px;
-    text-align: center;
-    color: #007bff;
-    text-decoration: none;
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin-top: var(--space-lg);
 }
 
-a.voltar:hover {
-    text-decoration: underline;
+.sidebar ul li {
+  margin-bottom: var(--space-sm);
+}
+
+.sidebar ul li a {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: all 0.3s ease;
+  position: relative;
+  font-weight: 500;
+}
+
+.sidebar ul li a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: var(--primary-light);
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  transform: translateX(5px);
+}
+
+.sidebar ul li a:hover::before {
+  opacity: 1;
+}
+
+.sidebar ul li.active a {
+  background-color: var(--primary);
+  color: var(--white);
+  font-weight: 600;
+}
+
+.sidebar ul li.active a::before {
+  opacity: 1;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: var(--space-lg);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+}
+
+/* ================================================== */
+/* Área de Conteúdo - Design limpo e moderno */
+/* ================================================== */
+.content-area {
+  flex-grow: 1;
+  padding: var(--space-xl);
+  background-color: var(--white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin: var(--space-xl);
+  margin-left: 320px; /* Ajustado para a sidebar maior */
+  transition: all 0.3s ease;
+}
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.page-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin: 0;
+}
+
+/* ================================================== */
+/* Estilização de Botões - Modernos e interativos */
+/* ================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+  letter-spacing: 0.3px;
+}
+
+.btn i, .btn svg {
+  font-size: 1.1em;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: var(--white);
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  color: var(--white);
+}
+
+.btn-danger:hover {
+  background-color: var(--danger-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ================================================== */
+/* Estilos para a Página de Cadastro e Edição de Produtos */
+/* ================================================== */
+.form-container {
+  background: var(--white);
+  padding: var(--space-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-header {
+  margin-bottom: var(--space-xl);
+  border-bottom: 2px solid var(--gray-light);
+  padding-bottom: var(--space-md);
+}
+
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-container label {
+  font-weight: 500;
+  color: var(--gray-dark);
+  margin-bottom: var(--space-sm);
+  display: block;
+  font-size: 0.95rem;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+  width: 100%;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-light);
+  margin-bottom: var(--space-sm);
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-container input:focus,
+.form-container select:focus,
+.form-container textarea:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(21, 128, 61, 0.15);
+}
+
+.form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--gray-light);
+}
+
+/* ================================================== */
+/* Estilos para a Lista de Produtos - Mais elegante */
+/* ================================================== */
+.lista-tabela-container {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+}
+
+.lista-tabela {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--white);
+}
+
+.lista-tabela th, .lista-tabela td {
+  padding: var(--space-md) var(--space-lg);
+  text-align: left;
+}
+
+.lista-tabela th {
+  background-color: var(--primary);
+  color: var(--white);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.lista-tabela tr {
+  transition: all 0.2s ease;
+}
+
+.lista-tabela tr:nth-child(odd) {
+  background-color: rgba(245, 247, 250, 0.7);
+}
+
+.lista-tabela tr:hover {
+  background-color: rgba(21, 128, 61, 0.05);
+}
+
+.lista-tabela td {
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.lista-tabela tr:last-child td {
+  border-bottom: none;
+}
+
+.action-buttons {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* ================================================== */
+/* Estilos para o Cardápio - Design gourmet e elegante */
+/* ================================================== */
+.cardapio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--space-xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.cardapio-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  width: 100%;
+  position: relative;
+}
+
+.cardapio-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: var(--primary);
+  border-radius: var(--radius-full);
+}
+
+.cardapio-titulo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: var(--space-sm);
+}
+
+.cardapio-subtitulo {
+  font-size: 1.1rem;
+  color: var(--gray-dark);
+  font-weight: 400;
+}
+
+.categoria-container {
+  width: 100%;
+  margin-bottom: var(--space-lg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--white);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.categoria-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: var(--primary);
+}
+
+.categoria-titulo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: var(--space-md);
+  color: var(--dark);
+  padding-bottom: var(--space-xs);
+  position: relative;
+  display: inline-block;
+}
+
+.categoria-titulo::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--accent);
+  border-radius: var(--radius-full);
+}
+
+.produtos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-md);
+}
+
+.produto-card {
+  background-color: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  position: relative;
+  border: 1px solid var(--gray-light);
+  display: flex;
+  flex-direction: column;
+}
+
+.produto-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+}
+
+.produto-imagem {
+  height: 140px;
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.produto-imagem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.5s ease;
+}
+
+.produto-card:hover .produto-imagem img {
+  transform: scale(1.05);
+}
+
+.produto-info {
+  padding: var(--space-md);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.produto-nome {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: var(--space-xs);
+}
+
+.produto-descricao {
+  color: var(--gray-dark);
+  font-size: 0.85rem;
+  margin-bottom: var(--space-xs);
+  line-height: 1.4;
+}
+
+.produto-preco {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-top: var(--space-xs);
+  display: block;
+}
+
+.produto-acoes {
+  margin-top: var(--space-sm);
+  display: flex;
+  gap: var(--space-xs);
+}
+
+/* ================================================== */
+/* Botões do Cardápio */
+/* ================================================== */
+.editar-produto {
+  background-color: var(--primary);
+  color: var(--white);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.85rem;
+}
+
+.editar-produto:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.excluir-produto {
+  background-color: var(--danger);
+  color: var(--white);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.85rem;
+}
+
+.excluir-produto:hover {
+  background-color: var(--danger-dark);
+  transform: translateY(-2px);
+}
+
+.novo-produto {
+  background-color: var(--primary);
+  color: var(--white);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.novo-produto:hover {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.voltar {
+  background-color: var(--secondary);
+  color: var(--white);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+.voltar:hover {
+  background-color: var(--secondary-light);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ================================================== */
+/* Utilitários responsivos e adicionais */
+/* ================================================== */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 240px;
+  }
+  
+  .content-area {
+    margin-left: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+    padding: var(--space-lg) var(--space-sm);
+  }
+  
+  .sidebar-logo, .sidebar ul li a span {
+    display: none;
+  }
+  
+  .content-area {
+    margin-left: 90px;
+  }
+  
+  .produtos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 576px) {
+  .content-area {
+    margin: var(--space-sm);
+    padding: var(--space-lg);
+  }
+  
+  .produtos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+  
+  .produto-imagem {
+    height: 120px;
+  }
+}
+
+/* Divisores de seções do cardápio */
+.categoria-divisor {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gray-light), transparent);
+  margin: var(--space-md) 0;
+}
+
+/* Grupos de produtos dentro de categorias */
+.produto-grupo {
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px dashed var(--gray-light);
+}
+
+.produto-grupo-titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-bottom: var(--space-sm);
+  padding-left: var(--space-sm);
+  border-left: 3px solid var(--accent);
+}
+
+/* Layout compacto para opções especiais */
+.opcoes-especiais {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-sm);
+}
+
+.opcao-card {
+  background-color: rgba(245, 247, 250, 0.5);
+  border: 1px solid var(--gray-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.opcao-card:hover {
+  background-color: rgba(21, 128, 61, 0.05);
+  transform: translateY(-2px);
+}
+
+.opcao-nome {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.opcao-preco {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: var(--space-xs);
+}
+
+/* Adicionar icones de indicador para elementos interativos */
+.has-dropdown::after {
+  content: "↓";
+  margin-left: var(--space-sm);
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+}
+
+.has-dropdown.active::after {
+  transform: rotate(180deg);
+}
+
+/* Badge para status/notificações */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-success {
+  background-color: rgba(21, 128, 61, 0.15);
+  color: var(--primary);
+}
+
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: var(--accent);
+}
+
+.badge-danger {
+  background-color: rgba(220, 38, 38, 0.15);
+  color: var(--danger);
 }

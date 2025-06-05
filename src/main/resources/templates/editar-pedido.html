@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Criar Novo Pedido</title>
+    <title>Editar Pedido</title>
     <link rel="stylesheet" th:href="@{/css/estilo.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* Seus estilos CSS personalizados */
         .item-row {
             display: flex;
             gap: 10px;
@@ -75,7 +76,7 @@
         </ul>
     </div>
     <div class="content-area">
-        <h1>Criar Novo Pedido</h1>
+        <h1>Editar Pedido #<span th:text="${order.orderNumber}"></span></h1>
 
         <div th:if="${erro}" class="error-message">
             <strong th:text="${erro}"></strong>
@@ -84,7 +85,9 @@
             <strong th:text="${mensagemErro}"></strong>
         </div>
 
-        <form th:action="@{/pedidos/salvar}" method="post" th:object="${order}" id="pedidoForm">
+        <form th:action="@{/pedidos/editar/{id}(id=${order.id})}" method="post" th:object="${order}" id="editarPedidoForm">
+            <input type="hidden" th:field="*{id}" />
+
             <div class="form-group">
                 <label for="orderStatus">Status do Pedido:</label>
                 <select id="orderStatus" th:field="*{status}">
@@ -95,6 +98,19 @@
 
             <h2>Itens do Pedido</h2>
             <div id="order-items-container">
+                <div class="item-row" th:each="item, itemStat : *{items}">
+                    <input type="hidden" th:name="'items[' + ${itemStat.index} + '].id'" th:value="${item.id}" />
+
+                    <select class="product-select" name="productId">
+                        <option value="">Selecione um Produto</option>
+                        <option th:each="prod : ${products}" th:value="${prod.id}" th:text="${prod.name + ' (Estoque: ' + prod.quantity + ')'}"
+                                th:selected="${item.product != null && prod.id == item.product.id}"></option>
+                    </select>
+                    <input type="number" class="quantity-input" name="quantity" placeholder="Quantidade" min="1" th:value="${item.quantity}" required />
+                    <input type="text" class="observation-input" name="observation" placeholder="Observação (opcional)" th:value="${item.observation}" />
+                    <button type="button" class="remove-item-btn"><i class="fas fa-times"></i></button>
+                </div>
+
                 <div class="item-row template" style="display: none;">
                     <select class="product-select" name="productId">
                         <option value="">Selecione um Produto</option>
@@ -107,8 +123,8 @@
             </div>
 
             <button type="button" id="add-item-btn" class="add-item-btn">Adicionar Item</button>
-            <button type="submit">Salvar Pedido</button>
- 	       </form>
+            <button type="submit">Atualizar Pedido</button>
+        </form>
 
         <a class="voltar" th:href="@{/pedidos}">← Voltar para a Lista de Pedidos</a>
     </div>
@@ -118,7 +134,7 @@
             const orderItemsContainer = document.getElementById('order-items-container');
             const addItemBtn = document.getElementById('add-item-btn');
             const itemTemplate = document.querySelector('.item-row.template');
-            const pedidoForm = document.getElementById('pedidoForm');
+            const editarPedidoForm = document.getElementById('editarPedidoForm');
 
             // Função para adicionar um novo item de pedido
             function addNewItem() {
@@ -126,7 +142,7 @@
                 newItemRow.classList.remove('template');
                 newItemRow.style.display = 'flex';
                 
-                // Limpa os valores do template (garante que não haja valores pré-preenchidos do template)
+                // Limpa os valores do template para o novo item
                 newItemRow.querySelector('.product-select').value = "";
                 newItemRow.querySelector('.quantity-input').value = "1";
                 newItemRow.querySelector('.observation-input').value = "";
@@ -139,27 +155,31 @@
                     validateMinItems(); // Revalida após remover
                 });
 
-                // Foca no novo select
                 newItemRow.querySelector('.product-select').focus();
-                validateMinItems(); // Valida após adicionar
+                validateMinItems();
             }
 
-            // Valida se há pelo menos um item *visível e ativo* no formulário
+            // Valida se há pelo menos um item *visível e válido* no formulário
             function validateMinItems() {
                 const activeItems = orderItemsContainer.querySelectorAll('.item-row:not(.template)');
                 if (activeItems.length === 0) {
-                    addNewItem(); // Adiciona um item se não houver nenhum
+                    addNewItem(); // Força a adição de um item se não houver nenhum
                 }
             }
+
+            // Inicializa listeners para os botões de remover dos itens EXISTENTES ao carregar a página
+            orderItemsContainer.querySelectorAll('.item-row:not(.template) .remove-item-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    button.closest('.item-row').remove();
+                    validateMinItems();
+                });
+            });
 
             // Listener para o botão "Adicionar Item"
             addItemBtn.addEventListener('click', addNewItem);
 
-            // Adiciona o primeiro item quando a página carrega, GARANTINDO QUE ELE NÃO É O TEMPLATE
-            validateMinItems();
-
             // Validação final do formulário no submit
-            pedidoForm.addEventListener('submit', function(event) {
+            editarPedidoForm.addEventListener('submit', function(event) {
                 const activeItems = orderItemsContainer.querySelectorAll('.item-row:not(.template)');
                 let hasValidItem = false;
 
@@ -173,7 +193,7 @@
                     const productId = itemRow.querySelector('.product-select').value;
                     const quantity = parseInt(itemRow.querySelector('.quantity-input').value, 10);
 
-                    // Verifica se o produto foi selecionado E a quantidade é válida
+                    // Verifica se o produto foi selecionado (não é a opção vazia) E a quantidade é válida
                     if (productId && productId !== "" && quantity > 0) {
                         hasValidItem = true;
                     }
@@ -184,6 +204,11 @@
                     alert("Por favor, selecione um produto e informe uma quantidade válida (maior que 0) para pelo menos um item.");
                 }
             });
+
+            // Garante que há pelo menos um item no carregamento da página, mesmo se o pedido vier sem itens
+            // Isto é particularmente útil para pedidos que não têm itens (o que pode ser um estado inválido)
+            // ou após um erro de backend que não recarregue os itens corretamente.
+            validateMinItems();
         });
     </script>
 </body>
